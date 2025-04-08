@@ -231,3 +231,67 @@ Przeglądarka nie może załadować zasobu (np. API, pliku JS). Powód: błędny
 Zaleca się wdrożenie warstw walidacji danych, rozszerzenie logowania błędów oraz używanie mechanizmów try-catch i fallbacków, by zapewnić stabilność aplikacji nawet w przypadku nieprzewidzianych błędów.
 
 """
+
+# System Obiegu Dokumentów
+
+## Opis projektu
+
+System obiegu dokumentów umożliwia zarządzanie dokumentami wewnętrznymi w organizacji. Użytkownicy systemu mogą tworzyć dokumenty, wysyłać je do akceptacji przez kierowników i dyrektorów, oraz przechowywać historię wszystkich zmian i działań związanych z dokumentami.
+
+## Struktura
+
+### Klasy
+
+1. **`Dokument`** - Klasa bazowa reprezentująca dokument w systemie. Przechowuje podstawowe informacje o dokumencie, takie jak tytuł, treść, status, data utworzenia i modyfikacji, historia zmian.
+   - Metody:
+     - `getId()`: Zwraca ID dokumentu.
+     - `getTytul()`: Zwraca tytuł dokumentu.
+     - `getStatus()`: Zwraca status dokumentu.
+     - `setStatus(Status $status)`: Ustawia status dokumentu i zapisuje datę modyfikacji.
+     - `getHistoria()`: Zwraca historię zmian dokumentu.
+
+2. **`PismoWychodzace`** - Rozszerza klasę `Dokument`, reprezentuje dokument typu pismo wychodzące. Dodaje numer wychodzący oraz możliwość dodawania załączników.
+   - Metody:
+     - `przydzielNumerWychodzacy(string $numer)`: Przydziela numer wychodzący do dokumentu.
+     - `dodajZalacznik(string $nazwaPliku, string $sciezka)`: Dodaje załącznik do dokumentu.
+
+3. **`Status`** - Enum reprezentujący status dokumentu. Statusy mogą obejmować m.in. `UTWORZONY`, `DO_AKCEPTACJI_KIEROWNIK`, `ZALECENIE_KIEROWNIK`, `DO_ZATWIERDZENIA_DYREKTOR`, itp.
+
+4. **`WalidatorDokumentu`** - Interfejs dla walidatorów dokumentów, umożliwiający sprawdzenie, czy dokument jest zgodny z określonymi zasadami przed wykonaniem akcji.
+
+5. **`AkcjaDokumentu`** - Interfejs dla klas wykonujących akcje na dokumentach. Każda akcja modyfikuje status dokumentu lub wykonuje inne działania.
+
+6. **`AkceptujKierownikAkcja`** i **`OdrzucKierownikAkcja`** - Klasy wykonujące akcje akceptacji lub odrzucenia dokumentu przez kierownika.
+
+7. **`Pracownik`** - Interfejs dla pracowników w systemie.
+   - Metody:
+     - `getId()`: Zwraca ID pracownika.
+     - `getCzyDostepny()`: Zwraca, czy pracownik jest dostępny.
+     - `getZastepca()`: Zwraca ID zastępcy pracownika.
+
+8. **`PracownikImpl`** - Implementacja interfejsu `Pracownik`. Reprezentuje dane konkretnego pracownika.
+
+9. **`PracownikSerwis`** - Serwis zarządzający pracownikami. Umożliwia uzyskanie dostępnych pracowników i zastępców.
+
+10. **`PracownikRepository`** - Interfejs repozytorium pracowników. Zapewnia metody do pobierania pracowników z bazy danych.
+
+11. **`ObiegDokumentow`** - Klasa zarządzająca obiegiem dokumentów w systemie. Przechowuje akcje i umożliwia ich wykonanie w określonym porządku.
+
+### Baza Danych
+
+Projekt wymaga bazy danych z następującymi tabelami:
+
+#### Tabela `pracownicy`
+Tabela przechowuje informacje o pracownikach.
+```sql
+CREATE TABLE pracownicy (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    imie VARCHAR(50) NOT NULL,
+    nazwisko VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    stanowisko VARCHAR(100) NOT NULL,
+    rola ENUM('PRACOWNIK', 'KIEROWNIK', 'DYREKTOR', 'ADMINISTRATOR') NOT NULL,
+    jest_dostepny BOOLEAN DEFAULT TRUE NOT NULL,
+    data_utworzenia TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    data_modyfikacji TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
