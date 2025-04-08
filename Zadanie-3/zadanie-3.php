@@ -95,6 +95,27 @@ function registerUser(PDO $pdo, array $data): void
 }
 
 
+function validateBirthDate(string $date): bool
+{
+    if (!strtotime($date)) return false;
+    $age = date_diff(date_create($date), date_create())->y;
+    return $age >= 18;
+}
+
+function validateNip(string $nip): bool
+{
+    if (!preg_match('/^\d{10}$/', $nip)) return false;
+
+    $weights = [6, 5, 7, 2, 3, 4, 5, 6, 7];
+    $sum = 0;
+    for ($i = 0; $i < 9; $i++) {
+        $sum += $nip[$i] * $weights[$i];
+    }
+
+    return $sum % 11 === (int)$nip[9];
+}
+?>
+
 
 
 
