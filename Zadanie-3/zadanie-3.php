@@ -22,3 +22,23 @@ echo "Rejestracja zakończona sukcesem!";
 echo "Błąd: " . $e->getMessage();
   }
 }
+
+function registerUser(PDO $pdo, array $data): void 
+{
+$email = trim($data['email'] ?? ");
+$userType = $data['user_type'] ?? ";
+
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+throw new Exception("Nieprawidłowy email.");
+}
+
+$stmt->execute([$email]); 
+if($stmt->fetchColumn() > 0) {
+throw new Exception("Email już istnieje.")
+
+}
+
+
+
+
+
