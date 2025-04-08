@@ -1,6 +1,10 @@
 <?php 
 
-//główna metoda generująca kalendarz w HTML
+
+//Ustawienie nagłówka UTF-8
+header('Content-Type: text/html; charset=UTF-8');
+
+//Główna metoda generująca kalendarz w HTML
 
 class KalendarzGenerator 
   {
@@ -84,9 +88,22 @@ public function render(): string
       }
   }
 
+
+// Tworzenie strony HTML z deklaracją UTF-8
+echo '<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8"> <!-- ✅ Deklaracja UTF-8 w HTML -->
+    <title>Kalendarz</title>
+</head>
+<body>';
+
+
 $calendar = new KalendarzGenerator (12, 2024); // Grudzień 2024 - jak w poleceniu zadania 
         echo $calendar->render();
-   
+
+
+echo '</body></html>'; // Zamknięcie dokumentu HTML
 
 
 
