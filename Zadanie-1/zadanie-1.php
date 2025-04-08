@@ -63,8 +63,28 @@ public function render(): string
     return $html;
 }
 
-           
 
+  //Render nagłówka kalendarza - dni tygodnia 
+
+
+      @return string 
+
+
+      private function renderHeadcer(): string 
+      {
+      $days = ['Pon', 'Wto', 'Śro', 'Czw', 'Pią', 'Sob', 'Nie'];
+      $html = '<tr>';
+        foreach ($days as $index => $day) {
+        $style = $index === 6 ? ' style="color: red;"' : '';
+        $html .= "<th{$style}>{$day}</th>th>";
+      
+        }
+
+        return $html;
+      }
+
+
+   
 
 
 
