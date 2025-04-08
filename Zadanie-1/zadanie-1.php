@@ -35,8 +35,8 @@ public function render(): string
 
     $monthName = $this->getMonthName(); // 
     $html = "<h2>{$monthName} {$this->year}</h2>";
+    $html .= '<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; text-align: center;">';
 
-    $html = '<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; text-align: center;">';
     $html .= $this->renderHeader();
     $html .= '<tr>';
 
