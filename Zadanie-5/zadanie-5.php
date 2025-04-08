@@ -118,3 +118,58 @@ class PismoWychodzace extends Dokument
     }
 }
 
+**
+ * Interfejs reprezentujący pracownika
+ */
+interface Pracownik
+{
+    public function getId(): int;
+    public function getCzyDostepny(): bool;
+    public function getZastepca(): ?int;
+}
+
+/**
+ * Klasa implementująca pracownika
+ */
+class PracownikImpl implements Pracownik
+{
+    private int $id;
+    private string $imie;
+    private string $nazwisko;
+    private string $stanowisko;
+    private bool $czyDostepny;
+    private ?int $zastepca;
+
+    public function __construct(
+        int $id,
+        string $imie,
+        string $nazwisko,
+        string $stanowisko,
+        bool $czyDostepny = true,
+        ?int $zastepca = null
+    ) {
+        $this->id = $id;
+        $this->imie = $imie;
+        $this->nazwisko = $nazwisko;
+        $this->stanowisko = $stanowisko;
+        $this->czyDostepny = $czyDostepny;
+        $this->zastepca = $zastepca;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getCzyDostepny(): bool
+    {
+        return $this->czyDostepny;
+    }
+
+    public function getZastepca(): ?int
+    {
+        return $this->zastepca;
+    }
+}
+
+
