@@ -113,3 +113,9 @@ Sposobem rozwiązania tego problemu może być obsługa wyjątków przy eksporci
     error_log("Błąd eksportu do Sage: " . $e->getMessage());
     notifyAdmin($e);
     }
+
+ ## E. Failed to load resource: net::ERR_FAILED
+
+ Błąd przeglądarki informujący o braku możliwości załadowania zasobu np.skryptu lub API. Najczęściej przyczyną jest braku dostępu do endpointu API. 
+
+ Sposobem rozwiązania może być przede wszystkim weryfikacja czy ścieżka URL jest poprawna. 
