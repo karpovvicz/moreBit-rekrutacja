@@ -4,7 +4,7 @@ obsługi danego defektu.
 
 
 ## A. [42P01] BŁĄD: relacja "cregisters.creg" nie istnieje.
-Typ Błędu w PostgreSQL naprawdopodobniej brakująca tabela lub błędna nazwa schematu/tabeli,
+Typ Błędu w PostgreSQL jest to naprawdopodobniej brakująca tabela lub błędna nazwa schematu/tabeli,
 czego przyczyną jest odwołanie do tabeli cregisters.creg, która albo nie istnieje w bazie danych albo ma błąd zapisu.
 
 Alternatywnie tabela nie została jeszcze utworzona np. z powodu błędu w migracjach i
@@ -19,7 +19,7 @@ Weryfikacja schematów i migracji:
 
     Edit  
 
-     SELECT * FROM information_schema.tables WHERE table_schema = 'cregisters';
+    SELECT * FROM information_schema.tables WHERE table_schema = 'cregisters';
 
 Upewnij się, że tabela creg faktycznie istnieje.  
 
@@ -77,5 +77,25 @@ Sposobem rozwiązania takiego problemu może być ustanowienie walidacji po stro
 
 Po zastosowaniu formularz powinien dynamicznie dopasować dostępne daty.
 
+## C.  [22P02] BŁĄD: invalid input syntax for integer: "30B"
 
+Błąd w PostgreSQL na skutek nieprawidłowej konwersji do integera.
+Wartość "30B" jest wstawiana w kolumnę oczekującą liczby całkowitej (integer).
 
+Przyczyną może być 
+niepoprawnny kod z formularza np. numer pokoju lub brak walidacji po stronie frontu lub serwera.
+
+Sposobem rozwiązania takiego problemu może być ustanowienie walidacji wejściowej: 
+
+     $id = $_POST['id'];
+     if (!ctype_digit($id)) {
+     throw new InvalidArgumentException("Nieprawidłowy identyfikator.");
+      }
+
+lub zastosowanie tzw. Sanity-check przed wysyłką zapytania: 
+
+     $stmt = $pdo->prepare("SELECT * FROM users WHERE id = :id");
+     $stmt->bindValue(':id', (int)$id, PDO::PARAM_INT);
+     $stmt->execute();
+
+## D.  [25-Nov-2022 15:50:02 Europe/Warsaw] Eksport danych do Sage ERP FK -1
