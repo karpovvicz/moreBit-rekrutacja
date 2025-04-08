@@ -19,3 +19,12 @@ function konwertujExcelNumerycznie(string $cellAddress): string {
   return $columnNumber . '.' . (int)$rowNumber;
   
 }
+
+try {
+    echo convertExcelCellToNumeric('A9') . "\n";   //  wynik: 1.1
+    echo convertExcelCellToNumeric('B2') ."\n";   // wynik: 2.2
+    echo convertExcelCellToNumeric('A10') . "\n"; // wynik: 27.10
+    echo convertExcelCellToNumeric('Z500') . "\n"; // wynik: 16384.1048576 (maksymalna komórka Excela)
+} catch (InvalidArgumentException $e) {
+    echo "Błąd: " . $e->getMessage();
+}
