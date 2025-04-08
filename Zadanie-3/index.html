@@ -9,5 +9,48 @@
 </head>
 <body>
 
+<form method="POST" action="zadanie-3.php" onsubmit="return validateForm()">
+    <label>Email: <input type="email" name="email" required></label><br>
+    <label>Typ użytkownika:
+        <select name="user_type" onchange="toggleFields(this.value)">
+            <option value="individual">Osoba fizyczna</option>
+            <option value="company">Firma</option>
+        </select>
+    </label><br>
+
+    <div id="individual-fields">
+        <label>Imię: <input type="text" name="first_name" required></label><br>
+        <label>Data urodzenia: <input type="date" name="birth_date" required></label><br>
+    </div>
+
+    <div id="company-fields" style="display:none;">
+        <label>Nazwa firmy: <input type="text" name="company_name" required></label><br>
+        <label>NIP: <input type="text" name="nip" required pattern="^\d{10}$" title="NIP must be a 10-digit number."></label><br>
+    </div>
+
+    <button type="submit">Zarejestruj</button>
+</form>
+
+<script>
+    function toggleFields(type) {
+        document.getElementById('individual-fields').style.display = type === 'individual' ? 'block' : 'none';
+        document.getElementById('company-fields').style.display = type === 'company' ? 'block' : 'none';
+    }
+    toggleFields('individual');
+
+    function validateForm() {
+        const userType = document.querySelector('[name="user_type"]').value;
+        if (userType === 'individual') {
+            const birthDate = new Date(document.querySelector('[name="birth_date"]').value);
+            const age = new Date().getFullYear() - birthDate.getFullYear();
+            if (age < 18) {
+                alert("Musisz być osobą pełnoletnią!");
+                return false;
+            }
+        }
+        return true;
+    }
+</script>
+
 </body>
 </html>
