@@ -90,7 +90,7 @@ public function render(): string
 
         return $html;
       }
-  }
+  
 
 // Metoda zwracająca nazwę miesiąca 
     private function getMonthName(): string
