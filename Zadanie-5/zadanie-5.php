@@ -346,5 +346,46 @@ class ObiegDokumentow
     }
 }
 
+/**
+ * Przykład użycia systemu obiegu dokumentów
+ */
+function przykladUzycia(): void
+{
+    // Tworzenie repozytoriów i serwisów
+    $pracownikRepository = new PracownikRepositoryImpl(); // Implementacja interfejsu
+    $pracownikSerwis = new PracownikSerwis($pracownikRepository);
 
+    // Tworzenie akcji
+    $akcje = [
+        'wyslij_do_akceptacji_kierownik' => new WyslijDoAkceptacjiKierownikAkcja($pracownikSerwis),
+        'akceptuj_kierownik' => new AkceptujKierownikAkcja($pracownikSerwis, $pracownikRepository),
+        'odrzuc_kierownik' => new OdrzucKierownikAkcja($pracownikSerwis, $pracownikRepository),
+        'zatwierdz_dyrektor' => new ZatwierdzDyrektorAkcja($pracownikSerwis, $pracownikRepository),
+        // Dodatkowe akcje...
+    ];
+
+    // Inicjalizacja systemu obiegu
+    $obiegDokumentow = new ObiegDokumentow($akcje);
+
+    // Przykład obiegu dokumentu
+    $autorId = 1; // ID pracownika będącego autorem pisma
+    $pismo = new PismoWychodzace('Przykładowe pismo wychodzące', 'Treść pisma...', $autorId);
+
+    // 1. Wysłanie pisma do akceptacji przez kierownika
+    $obiegDokumentow->wykonajAkcje('wyslij_do_akceptacji_kierownik', $pismo, $autorId);
+
+    // 2. Kierownik (lub jego zastępca) akceptuje pismo
+    $kierownikId = 2; // ID kierownika
+    $obiegDokumentow->wykonajAkcje('akceptuj_kierownik', $pismo, $kierownikId, 'Akceptuję pismo');
+
+    // 3. Dyrektor (lub jego zastępca) zatwierdza pismo
+    $dyrektorId = 3; // ID dyrektora
+    $obiegDokumentow->wykonajAkcje('zatwierdz_dyrektor', $pismo, $dyrektorId, 'Zatwierdzam pismo');
+
+    // Wyświetlenie historii obiegu pisma
+    $historia = $pismo->getHistoria();
+    foreach ($historia as $wpis) {
+        echo "{$wpis['data']->format('Y-m-d H:i:s')} - {$wpis['opis']}\n";
+    }
+}
 
