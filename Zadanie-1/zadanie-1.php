@@ -1,6 +1,6 @@
 <?php 
 
-*główna metoda generująca kalendarz w HTML
+//główna metoda generująca kalendarz w HTML
 
 class KalendarzGenerator 
   {
@@ -19,7 +19,7 @@ class KalendarzGenerator
 
     }
 
-@return string 
+//@return string 
 
 
 public function render(): string 
@@ -67,7 +67,7 @@ public function render(): string
   //Render nagłówka kalendarza - dni tygodnia 
 
 
-      @return string 
+     // @return string 
 
 
       private function renderHeader(): string 
