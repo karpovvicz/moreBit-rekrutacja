@@ -70,7 +70,7 @@ public function render(): string
       @return string 
 
 
-      private function renderHeadcer(): string 
+      private function renderHeader(): string 
       {
       $days = ['Pon', 'Wto', 'Śro', 'Czw', 'Pią', 'Sob', 'Nie'];
       $html = '<tr>';
