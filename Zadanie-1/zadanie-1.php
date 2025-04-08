@@ -76,7 +76,7 @@ public function render(): string
       $html = '<tr>';
         foreach ($days as $index => $day) {
         $style = $index === 6 ? ' style="color: red;"' : '';
-        $html .= "<th{$style}>{$day}</th>th>";
+        $html .= "<th{$style}>{$day}</th>";
       
         }
 
