@@ -172,4 +172,47 @@ class PracownikImpl implements Pracownik
     }
 }
 
+/**
+ * Serwis zarządzający pracownikami
+ */
+class PracownikSerwis
+{
+    private PracownikRepository $pracownikRepository;
+
+    public function __construct(PracownikRepository $pracownikRepository)
+    {
+        $this->pracownikRepository = $pracownikRepository;
+    }
+
+    public function pobierzPracownikaLubZastepce(int $pracownikId): ?Pracownik
+    {
+        $pracownik = $this->pracownikRepository->pobierzPrzezId($pracownikId);
+        
+        if ($pracownik === null) {
+            return null;
+        }
+        
+        if ($pracownik->getCzyDostepny()) {
+            return $pracownik;
+        }
+        
+        $zastepca = $pracownik->getZastepca();
+        if ($zastepca === null) {
+            return null;
+        }
+        
+        return $this->pracownikRepository->pobierzPrzezId($zastepca);
+    }
+}
+
+/**
+ * Interfejs repozytorium pracowników
+ */
+interface PracownikRepository
+{
+    public function pobierzPrzezId(int $id): ?Pracownik;
+    public function pobierzKierownikow(): array;
+    public function pobierzDyrektorow(): array;
+}
+
 
