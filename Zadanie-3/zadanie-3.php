@@ -34,8 +34,28 @@ throw new Exception("Nieprawidłowy email.");
 
 $stmt->execute([$email]); 
 if($stmt->fetchColumn() > 0) {
-throw new Exception("Email już istnieje.")
+throw new Exception("Email już istnieje.");
 
+}
+
+$pdo->beginTransaction();
+
+try{
+$stmt = $pdo->prepare("INSERT INTO users (email, user_type) VALUES (?,?)");
+$stmt->execute([$email, $userType]);
+$userId = $pdo->lastInserId();
+
+if ($userType === 'individual')
+{
+$firstName = trim($data['first_name'] ?? '');
+$birthDate = $data['birth_date'] ?? '';
+
+if (!preg_match('/^[\p{L} -]{2,}$/u', $firstName)) {
+throw new Exception("Nieprawidłowe imię.");
+}
+
+if (!validateBirthDate($birthDate)) {
+throw new Exception("Nieprawidłowa data urodzenia.");
 }
 
 
