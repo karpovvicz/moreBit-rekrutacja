@@ -34,15 +34,15 @@ public function render(): string
 
 
     $monthName = $this->getMonthName(); // 
-    $html = "<h2>{$monthName} {$this->year}</h2>";
+    $html = "<h2>{$monthName} {$this->year}</h2>\n";
     $html .= '<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; text-align: center;">';
 
     $html .= $this->renderHeader();
-    $html .= '<tr>';
+    $html .= '<tr>' . "\n";
 
     // Puste wiersze przed 1 miesiąca
     for ($i = 1; $i < $startWeekDay; $i++) {
-        $html .= '<td></td>';
+        $html .= '<td></td>' . "\n";
     }
 
     for ($day = 1; $day <= $daysInMonth; $day++) {
@@ -51,12 +51,12 @@ public function render(): string
 
         $style = $dayOfWeek === 7 ? ' style="color: red;"' : ''; // Zaznacz niedzielę na czerwono
 
-        $html .= "<td{$style}>{$day}</td>";
+        $html .= "<td{$style}>{$day}</td>\n";
 
         if ($dayOfWeek === 7) {
-            $html .= '</tr>';
+            $html .= '</tr>' . "\n";
             if ($day !== $daysInMonth) {
-                $html .= '<tr>';
+                $html .= '<tr>' . "\n";
             }
         }
     }
@@ -64,10 +64,10 @@ public function render(): string
     // Zamknij wiersze na koniec miesiąca
     $lastDayOfMonth = new DateTimeImmutable("{$this->year}-{$this->month}-{$daysInMonth}");
     if ((int)$lastDayOfMonth->format('N') !== 7) {
-        $html .= '</tr>';
+        $html .= '</tr>' . "\n";
     }
 
-    $html .= '</table>';
+     $html .= '</table>' . "\n";
     return $html;
 }
 
@@ -81,10 +81,10 @@ public function render(): string
       private function renderHeader(): string 
       {
       $days = ['Pon', 'Wto', 'Śro', 'Czw', 'Pią', 'Sob', 'Nie'];
-      $html = '<tr>';
+      $html = '<tr>' . "\n";
         foreach ($days as $index => $day) {
         $style = $index === 6 ? ' style="color: red;"' : '';
-        $html .= "<th{$style}>{$day}</th>";
+        $html .= "<th{$style}>{$day}</th>\n";
       
         }
 
@@ -107,21 +107,22 @@ public function render(): string
 
 
 // Tworzenie strony HTML z deklaracją UTF-8
-echo '<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <title>Kalendarz</title>
-</head>
-<body>';
+echo '<!DOCTYPE html>' . "\n";
+echo '<html lang="pl">' . "\n";
+echo '<head>' . "\n";
+echo '    <meta charset="UTF-8">' . "\n";
+    '<title>Kalendarz</title>' . "\n";
+echo '    <title>Kalendarz</title>' . "\n";
+echo '</head>' . "\n";
+echo '<body>' . "\n";
 
 
 $calendar = new KalendarzGenerator (12, 2024); // Grudzień 2024 - jak w poleceniu zadania 
         echo $calendar->render();
 
 
-echo '</body></html>'; // Zamknięcie dokumentu HTML
-
+echo '</body>' . "\n";
+echo '</html>' . "\n"; // Zamknięcie dokumentu HTML
 
 
 
