@@ -16,12 +16,12 @@ function konwertujExcelNumerycznie(string $cellAddress): string {
     $columnNumber += ord($char) - ord('A') +1;
   }
 
-  return $columnNumber . '.' . (int)$rowNumber;
+  return $columnNumber . '.' . (int)$rowNumbers;
   
 }
 
 try {
-    echo konwertujExcelNumerycznie('A9') . "\n";   //  wynik: 1.1
+    echo konwertujExcelNumerycznie('A9') . "\n";   //  wynik: 1.9
     echo konwertujExcelNumerycznie('B2') ."\n";   // wynik: 2.2
     echo konwertujExcelNumerycznie('A10') . "\n"; // wynik: 27.10
     echo konwertujExcelNumerycznie('Z500') . "\n"; // wynik: 16384.1048576 (maksymalna komórka Excela)
