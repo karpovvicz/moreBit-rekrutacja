@@ -93,3 +93,28 @@ interface AkcjaDokumentu
     public function wykonaj(Dokument $dokument, int $pracownikId, ?string $komentarz = null): bool;
 }
 
+/**
+ * Klasa reprezentująca pismo wychodzące
+ */
+class PismoWychodzace extends Dokument
+{
+    private ?string $numerWychodzacy = null;
+    private array $zalaczniki = [];
+
+    public function przydzielNumerWychodzacy(string $numer): void
+    {
+        $this->numerWychodzacy = $numer;
+        $this->dodajHistorie("Przydzielono numer wychodzący: {$numer}");
+    }
+
+    public function dodajZalacznik(string $nazwaPliku, string $sciezka): void
+    {
+        $this->zalaczniki[] = [
+            'nazwa' => $nazwaPliku,
+            'sciezka' => $sciezka,
+            'data_dodania' => new DateTime()
+        ];
+        $this->dodajHistorie("Dodano załącznik: {$nazwaPliku}");
+    }
+}
+
