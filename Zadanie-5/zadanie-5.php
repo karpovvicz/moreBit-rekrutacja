@@ -323,4 +323,28 @@ class OdrzucKierownikAkcja implements AkcjaDokumentu
 }
 
 
+/**
+ * Klasa obsługująca obieg dokumentów
+ */
+class ObiegDokumentow
+{
+    private array $akcje;
+    
+    public function __construct(array $akcje)
+    {
+        $this->akcje = $akcje;
+    }
+    
+    public function wykonajAkcje(string $nazwaAkcji, Dokument $dokument, int $pracownikId, ?string $komentarz = null): bool
+    {
+        if (!isset($this->akcje[$nazwaAkcji])) {
+            throw new InvalidArgumentException("Nieznana akcja: {$nazwaAkcji}");
+        }
+        
+        $akcja = $this->akcje[$nazwaAkcji];
+        return $akcja->wykonaj($dokument, $pracownikId, $komentarz);
+    }
+}
+
+
 
