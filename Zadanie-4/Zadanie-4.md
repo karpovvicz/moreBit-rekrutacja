@@ -15,30 +15,46 @@ Użytkownik bazy danych nie ma dostępu do tego schematu.
 Proponowana obsługa tego błędu:
 Weryfikacja schematów i migracji:
 
-sql
-Copy
-Edit
+sql  
+
+Copy  
+
+Edit  
+
 SELECT * FROM information_schema.tables WHERE table_schema = 'cregisters';
-Upewnij się, że tabela creg faktycznie istnieje.
+Upewnij się, że tabela creg faktycznie istnieje.  
+
 
 Zabezpieczenie zapytania w PHP: Zamiast pisać surowe SQL-e:
 
-php
-Copy
-Edit
-$sql = "SELECT * FROM cregisters.creg WHERE ...";
+php  
+
+Copy  
+
+Edit  
+
+$sql = "SELECT * FROM cregisters.creg WHERE ...";  
+
 używaj mechanizmu ORM (np. Doctrine lub Eloquent), który waliduje zapytania i schematy.
 
 Fallback / logowanie błędu:
 
-php
-Copy
-Edit
+php  
+
+Copy  
+
+Edit  
+
 try {
-    $result = $db->query("SELECT * FROM cregisters.creg");
-} catch (PDOException $e) {
+
+    $result = $db->query("SELECT * FROM cregisters.creg"); 
+    
+  } catch (PDOException $e) { 
+
     error_log("Błąd zapytania do tabeli creg: " . $e->getMessage());
-    throw new Exception("Wystąpił błąd przy pobieraniu danych. Skontaktuj się z administratorem.");
+    throw new Exception("Wystąpił błąd przy pobieraniu danych. Skontaktuj się z administratorem.");  
+
+    }
 }
 
 
