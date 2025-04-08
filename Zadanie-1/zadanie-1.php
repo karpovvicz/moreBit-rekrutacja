@@ -82,6 +82,7 @@ public function render(): string
 
         return $html;
       }
+  }
 
 $calendar = new KalendarzGenerator (12, 2024); // Grudzień 2024 - jak w poleceniu zadania 
         echo $calendar->render();
