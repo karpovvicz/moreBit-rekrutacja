@@ -215,4 +215,110 @@ interface PracownikRepository
     public function pobierzDyrektorow(): array;
 }
 
+/**
+ * Akcja akceptacji pisma przez kierownika
+ */
+class AkceptujKierownikAkcja implements AkcjaDokumentu
+{
+    private PracownikSerwis $pracownikSerwis;
+    private PracownikRepository $pracownikRepository;
+
+    public function __construct(PracownikSerwis $pracownikSerwis, PracownikRepository $pracownikRepository)
+    {
+        $this->pracownikSerwis = $pracownikSerwis;
+        $this->pracownikRepository = $pracownikRepository;
+    }
+
+    public function wykonaj(Dokument $dokument, int $pracownikId, ?string $komentarz = null): bool
+    {
+        if (!($dokument instanceof PismoWychodzace)) {
+            throw new InvalidArgumentException("Dokument musi być typu PismoWychodzace");
+        }
+        
+        if ($dokument->getStatus() !== Status::DO_AKCEPTACJI_KIEROWNIK) {
+            throw new LogicException("Nieprawidłowy status dokumentu dla tej akcji");
+        }
+        
+        // Sprawdź czy pracownik jest kierownikiem lub zastępcą
+        $kierownicy = $this->pracownikRepository->pobierzKierownikow();
+        $aktualnyPracownik = $this->pracownikSerwis->pobierzPracownikaLubZastepce($pracownikId);
+        
+        $czyUprawniony = false;
+        foreach ($kierownicy as $kierownik) {
+            if ($kierownik->getId() === $pracownikId) {
+                $czyUprawniony = true;
+                break;
+            }
+            
+            // Sprawdź czy pracownik jest zastępcą
+            if ($kierownik->getZastepca() === $pracownikId && !$kierownik->getCzyDostepny()) {
+                $czyUprawniony = true;
+                break;
+            }
+        }
+        
+        if (!$czyUprawniony) {
+            throw new UnauthorizedException("Brak uprawnień do wykonania tej akcji");
+        }
+
+        $dokument->setStatus(Status::ZAAKCEPTOWANY_KIEROWNIK);
+        
+        // Automatyczne przesłanie do dyrektora
+        $dokument->setStatus(Status::DO_ZATWIERDZENIA_DYREKTOR);
+        
+        return true;
+    }
+}
+
+/**
+ * Akcja odrzucenia pisma przez kierownika
+ */
+class OdrzucKierownikAkcja implements AkcjaDokumentu
+{
+    private PracownikSerwis $pracownikSerwis;
+    private PracownikRepository $pracownikRepository;
+
+    public function __construct(PracownikSerwis $pracownikSerwis, PracownikRepository $pracownikRepository)
+    {
+        $this->pracownikSerwis = $pracownikSerwis;
+        $this->pracownikRepository = $pracownikRepository;
+    }
+
+    public function wykonaj(Dokument $dokument, int $pracownikId, ?string $komentarz = null): bool
+    {
+        if (!($dokument instanceof PismoWychodzace)) {
+            throw new InvalidArgumentException("Dokument musi być typu PismoWychodzace");
+        }
+        
+        if ($dokument->getStatus() !== Status::DO_AKCEPTACJI_KIEROWNIK) {
+            throw new LogicException("Nieprawidłowy status dokumentu dla tej akcji");
+        }
+        
+        // Sprawdź czy pracownik jest kierownikiem lub zastępcą
+        $kierownicy = $this->pracownikRepository->pobierzKierownikow();
+        $aktualnyPracownik = $this->pracownikSerwis->pobierzPracownikaLubZastepce($pracownikId);
+        
+        $czyUprawniony = false;
+        foreach ($kierownicy as $kierownik) {
+            if ($kierownik->getId() === $pracownikId) {
+                $czyUprawniony = true;
+                break;
+            }
+            
+            // Sprawdź czy pracownik jest zastępcą
+            if ($kierownik->getZastepca() === $pracownikId && !$kierownik->getCzyDostepny()) {
+                $czyUprawniony = true;
+                break;
+            }
+        }
+        
+        if (!$czyUprawniony) {
+            throw new UnauthorizedException("Brak uprawnień do wykonania tej akcji");
+        }
+
+        $dokument->setStatus(Status::ODRZUCONY_KIEROWNIK);
+        
+        return true;
+    }
+}
 
