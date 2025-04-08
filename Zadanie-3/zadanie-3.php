@@ -58,6 +58,20 @@ if (!validateBirthDate($birthDate)) {
 throw new Exception("Nieprawidłowa data urodzenia.");
 }
 
+$stmt = $pdo->prepare("INSERT INTO user_individuals (user_id, first_name, birth_date) VALUES (?, ?, ?)");
+$stmt->execute([$userId, $firstName, $birthDate]);
+} elseif ($userType === 'company') {
+$companyName = trim($data['company_name'] ?? '');
+$nip = preg_replace('/[^0-9]/', '', $data['nip'] ?? '');
+
+if (strlen($companyName) < 2) {
+throw new Exception("Nazwa firmy jest zbyt krótka.");
+}
+
+if (!validateNip($nip)) {
+throw new Exception("Nieprawidłowy NIP.");
+}
+
 
 
 
