@@ -85,3 +85,11 @@ interface WalidatorDokumentu
     public function waliduj(Dokument $dokument): bool;
 }
 
+/**
+ * Interface dla wykonawców akcji na dokumencie
+ */
+interface AkcjaDokumentu
+{
+    public function wykonaj(Dokument $dokument, int $pracownikId, ?string $komentarz = null): bool;
+}
+
