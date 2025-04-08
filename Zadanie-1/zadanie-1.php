@@ -10,7 +10,7 @@ class KalendarzGenerator
     public function __construct(int $month, int $year)
     {
       if ($month < 1 || $month > 12) {
-        trow new InvalidArgumentException("Podaj zakres miesięczny 1-12.");
+        throw new InvalidArgumentException("Podaj zakres miesięczny 1-12.");
     
     }
 
