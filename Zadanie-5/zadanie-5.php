@@ -61,3 +61,27 @@ abstract class Dokument
         return $this->historia;
     }
 }
+
+/**
+ * Enum reprezentujący możliwe statusy dokumentu
+ */
+enum Status: string
+{
+    case UTWORZONY = 'utworzony';
+    case DO_AKCEPTACJI_KIEROWNIK = 'do_akceptacji_kierownik';
+    case ZAAKCEPTOWANY_KIEROWNIK = 'zaakceptowany_kierownik';
+    case ODRZUCONY_KIEROWNIK = 'odrzucony_kierownik';
+    case DO_ZATWIERDZENIA_DYREKTOR = 'do_zatwierdzenia_dyrektor';
+    case ZATWIERDZONY_DYREKTOR = 'zatwierdzony_dyrektor';
+    case ODRZUCONY_DYREKTOR = 'odrzucony_dyrektor';
+    case WYCOFANY = 'wycofany';
+}
+
+/**
+ * Interface dla walidatorów
+ */
+interface WalidatorDokumentu
+{
+    public function waliduj(Dokument $dokument): bool;
+}
+
