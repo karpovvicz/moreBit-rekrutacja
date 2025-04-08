@@ -110,7 +110,7 @@ public function render(): string
 echo '<!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8"> <!-- ✅ Deklaracja UTF-8 w HTML -->
+    <meta charset="UTF-8">
     <title>Kalendarz</title>
 </head>
 <body>';
