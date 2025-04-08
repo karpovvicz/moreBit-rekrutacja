@@ -99,3 +99,17 @@ lub zastosowanie tzw. Sanity-check przed wysyłką zapytania:
      $stmt->execute();
 
 ## D.  [25-Nov-2022 15:50:02 Europe/Warsaw] Eksport danych do Sage ERP FK -1
+
+Błąd wystepuje najprawdopodobniej na skutek niepowodzenia w wysyłce danych czego przyczyną może być np. brak danych, błąd połączenia, błąd autoryzacji, zmiana w API. 
+
+Sposobem rozwiązania tego problemu może być obsługa wyjątków przy eksporcie danych za pomocą funkcji: 
+
+     try {
+    $result = $sageClient->eksportuj($dane);
+    if ($result->kod !== 0) {
+        throw new RuntimeException("Eksport nieudany: kod " . $result->kod);
+    }
+    } catch (Exception $e) {
+    error_log("Błąd eksportu do Sage: " . $e->getMessage());
+    notifyAdmin($e);
+    }
